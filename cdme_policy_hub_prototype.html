@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CDME Policies & Procedures Hub</title>
+<style>
+  :root{
+    --bg:#f6f8fb;
+    --panel:#ffffff;
+    --border:#d9e0ea;
+    --text:#1f2937;
+    --muted:#5b6472;
+    --accent:#ba0c2f;
+    --accent-soft:#fdecef;
+    --hover:#f1f5f9;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color:var(--text);
+    background:var(--bg);
+  }
+  .app{
+    display:grid;
+    grid-template-columns: 320px 1fr;
+    min-height:100vh;
+  }
+  .sidebar{
+    background:var(--panel);
+    border-right:1px solid var(--border);
+    padding:20px 16px;
+    overflow:auto;
+  }
+  .brand{
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--border);
+  }
+  .brand h1{
+    font-size:20px;
+    margin:0 0 4px 0;
+  }
+  .brand p{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.4;
+  }
+  .search{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:14px;
+    margin-bottom:14px;
+  }
+  details.group{
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:#fff;
+    margin-bottom:10px;
+    overflow:hidden;
+  }
+  details.group summary{
+    list-style:none;
+    cursor:pointer;
+    padding:12px 14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#fff;
+  }
+  details.group summary::-webkit-details-marker{display:none}
+  details.group[open] summary{
+    background:var(--accent-soft);
+    color:var(--accent);
+  }
+  .items{
+    border-top:1px solid var(--border);
+    padding:6px;
+  }
+  .nav-btn{
+    width:100%;
+    text-align:left;
+    border:none;
+    background:none;
+    border-radius:8px;
+    padding:10px 10px;
+    cursor:pointer;
+    color:var(--text);
+    font-size:14px;
+    line-height:1.35;
+  }
+  .nav-btn:hover{background:var(--hover)}
+  .nav-btn.active{
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-weight:600;
+  }
+  .content{
+    padding:28px;
+  }
+  .content-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:28px;
+    max-width:1000px;
+    box-shadow:0 8px 24px rgba(15,23,42,.04);
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:6px 8px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  h2{
+    margin:0 0 8px 0;
+    font-size:30px;
+  }
+  .subtitle{
+    margin:0 0 18px 0;
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.5;
+  }
+  h3{
+    margin:22px 0 10px 0;
+    font-size:19px;
+  }
+  ol, ul{
+    padding-left:22px;
+    line-height:1.6;
+  }
+  li{margin:4px 0}
+  .placeholder{
+    background:#fafafa;
+    border:1px dashed var(--border);
+    border-radius:14px;
+    padding:16px;
+    color:var(--muted);
+  }
+  .meta{
+    margin-top:24px;
+    font-size:12px;
+    color:var(--muted);
+    border-top:1px solid var(--border);
+    padding-top:14px;
+  }
+  .empty{
+    color:var(--muted);
+    font-size:13px;
+    padding:8px 10px 12px 10px;
+  }
+  @media (max-width: 900px){
+    .app{grid-template-columns:1fr}
+    .sidebar{border-right:none;border-bottom:1px solid var(--border)}
+    .content{padding:16px}
+    .content-card{padding:20px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>CDME Policies & Procedures</h1>
+      <p>Prototype hub for use inside Teams. Left-side categories can be expanded to jump to a policy or procedure.</p>
+    </div>
+
+    <input id="searchBox" class="search" type="text" placeholder="Search policies..." oninput="filterNav()" />
+
+    <details class="group" open data-group>
+      <summary><span>Intro</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn active" data-id="welcome" onclick="showSection('welcome', this)">Welcome / How to Use This Hub</button>
+      </div>
+    </details>
+
+    <details class="group" open data-group>
+      <summary><span>Facility Ops</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn" data-id="purchase" onclick="showSection('purchase', this)">Equipment – Purchase Process</button>
+        <button class="nav-btn" data-id="donation" onclick="showSection('donation', this)">Equipment – Donation Process</button>
+        <button class="nav-btn" data-id="consignment" onclick="showSection('consignment', this)">Equipment – Consignment Process</button>
+        <button class="nav-btn" data-id="surplus" onclick="showSection('surplus', this)">Equipment – Surplus Process</button>
+      </div>
+    </details>
+
+    <details class="group" open data-group>
+      <summary><span>Salesforce</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn" data-id="salesforce" onclick="showSection('salesforce', this)">Salesforce Operating Procedures</button>
+      </div>
+    </details>
+
+    <details class="group" open data-group>
+      <summary><span>General Ops</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn" data-id="drivers" onclick="showSection('drivers', this)">OSU Drivers Registration</button>
+        <button class="nav-btn" data-id="marketing" onclick="showSection('marketing', this)">Marketing</button>
+      </div>
+    </details>
+
+    <details class="group" open data-group>
+      <summary><span>Human Resources</span><span>▾</span></summary>
+      <div class="items">
+        <div class="empty">No HR procedures loaded yet.</div>
+      </div>
+    </details>
+  </aside>
+
+  <main class="content">
+    <div class="content-card" id="content"></div>
+  </main>
+</div>
+
+<script>
+const sections = {
+  welcome: `
+    <div class="eyebrow">Intro</div>
+    <h2>Welcome / How to Use This Hub</h2>
+    <p class="subtitle">This is a starter version of a CDME policies and procedures hub designed to mimic the left-hand navigation experience you wanted inside Teams.</p>
+
+    <h3>How it is organized</h3>
+    <ul>
+      <li><strong>Intro</strong> contains overview and orientation material.</li>
+      <li><strong>Facility Ops</strong> contains equipment-related processes.</li>
+      <li><strong>Salesforce</strong> contains CRM procedures and stage guidance.</li>
+      <li><strong>General Ops</strong> contains shared operational procedures.</li>
+      <li><strong>Human Resources</strong> is ready for HR policies as they are added.</li>
+    </ul>
+
+    <h3>Recommended content structure going forward</h3>
+    <ol>
+      <li>Use one page per policy or procedure.</li>
+      <li>Keep each page to overview, approvals/owners, required steps, and records/storage location.</li>
+      <li>Use consistent titles so people can find things quickly.</li>
+      <li>Add revision dates and document owner at the bottom of each page.</li>
+    </ol>
+
+    <div class="placeholder">
+      <strong>Next build step:</strong> keep adding the remaining Word documents and sort each one into the correct left-nav category. This prototype is already structured for that.
+    </div>
+
+    <div class="meta">Prototype created for CDME Teams use.</div>
+  `,
+  purchase: `
+    <div class="eyebrow">Facility Ops</div>
+    <h2>Equipment – Purchase Process</h2>
+    <p class="subtitle">Used when CDME staff are purchasing equipment with CDME funds.</p>
+
+    <h3>Overview</h3>
+    <p>Equipment is central to CDME operations. This process should be followed when purchasing equipment with CDME funds.</p>
+
+    <h3>Required approvals before purchase</h3>
+    <ol>
+      <li><strong>Division Director</strong> (if applicable) confirms the equipment aligns with division goals and objectives.</li>
+      <li><strong>Director of Laboratory Services</strong> confirms space, power, and any facility upgrade needs.</li>
+      <li><strong>Director of Business Administration</strong> confirms funding is available for the purchase, delivery, and facility upgrades and confirms forecasted project work tied to the equipment.</li>
+      <li><strong>Executive Director</strong> confirms alignment with CDME’s mission and vision.</li>
+    </ol>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>CDME staff member obtains approval from all leadership listed above.</li>
+      <li>CDME staff member works with the CDME Fiscal Associate to initiate the purchase and follow university purchasing procedures.</li>
+      <li>CDME staff member coordinates delivery and any needed facility upgrades with the Director of Laboratory Services and Director of Business Administration.</li>
+      <li>Director of Laboratory Services documents the equipment on CDME master equipment lists.</li>
+    </ol>
+
+    <div class="meta">Source document: Equipment – Purchase Process</div>
+  `,
+  donation: `
+    <div class="eyebrow">Facility Ops</div>
+    <h2>Equipment – Donation Process</h2>
+    <p class="subtitle">Used when equipment is being donated to CDME by an external partner.</p>
+
+    <h3>Overview</h3>
+    <p>Many CDME equipment additions come through donation. This process ensures the donation is properly approved and documented within OSU/CDME.</p>
+
+    <h3>Required approvals before donation</h3>
+    <ol>
+      <li><strong>Division Director</strong> (if applicable) confirms alignment with division goals.</li>
+      <li><strong>Director of Laboratory Services</strong> confirms space, power, and facility readiness.</li>
+      <li><strong>Director of Business Administration</strong> confirms funding for delivery and upgrades and confirms forecasted project use.</li>
+      <li><strong>Executive Director</strong> confirms alignment with CDME’s overall mission and vision.</li>
+    </ol>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>CDME staff member obtains all required leadership approvals.</li>
+      <li>CDME staff member works with the appropriate College of Engineering or OSU Office of Advancement staff to complete and document the donation paperwork.</li>
+      <li>CDME staff member coordinates delivery and facility upgrades with the Director of Laboratory Services and Director of Business Administration.</li>
+      <li>Director of Laboratory Services adds the donated equipment to CDME master equipment lists.</li>
+    </ol>
+
+    <div class="meta">Source document: Equipment – Donation Process</div>
+  `,
+  consignment: `
+    <div class="eyebrow">Facility Ops</div>
+    <h2>Equipment – Consignment Process</h2>
+    <p class="subtitle">Used when external partners offer equipment to CDME under a consignment agreement.</p>
+
+    <h3>Overview</h3>
+    <p>This process should be followed to ensure consigned equipment is received and documented correctly within OSU/CDME.</p>
+
+    <h3>Required approvals before consignment</h3>
+    <ol>
+      <li><strong>Division Director</strong> (if applicable) confirms alignment with division goals.</li>
+      <li><strong>Director of Laboratory Services</strong> confirms facility capacity and upgrade needs.</li>
+      <li><strong>Director of Business Administration</strong> confirms funding for delivery, maintenance, and facility upgrades and confirms forecasted project work.</li>
+      <li><strong>Executive Director</strong> confirms alignment with CDME mission and vision.</li>
+    </ol>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>CDME staff member obtains the required approvals.</li>
+      <li>CDME staff member works with the Engineering Research Administration Contracts Manager and, if needed, OSU Legal Affairs to complete consignment paperwork with the external partner.</li>
+      <li>CDME staff member coordinates delivery and any needed upgrades with the Director of Laboratory Services and Director of Business Administration.</li>
+      <li>Director of Laboratory Services documents the equipment on CDME master equipment lists and includes beginning and end dates for the consignment.</li>
+    </ol>
+
+    <div class="meta">Source document: Equipment – Consignment Process</div>
+  `,
+  surplus: `
+    <div class="eyebrow">Facility Ops</div>
+    <h2>Equipment – Surplus Process</h2>
+    <p class="subtitle">Used when CDME equipment is being removed or otherwise disposed of through OSU Surplus.</p>
+
+    <h3>Overview</h3>
+    <p>OSU Surplus handles the disposition of Ohio State property in accordance with university policy. Disposition methods can include department transfer, public sale, public auction, recycle, and trash.</p>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>CDME staff confirms ownership of the equipment with the Director of Laboratory Services before moving forward.</li>
+      <li>If the equipment belongs to a non-CDME faculty or staff member, permission from the owner must be received before disposition.</li>
+      <li>Director of Laboratory Services emails the Fiscal Associate the equipment name, location, OSU Asset ID if applicable, picture, disposition instructions, and CDME point of contact including phone number.</li>
+      <li>Fiscal Associate submits a Disposal Request through the OSU Surplus Property Management System (SPMS).</li>
+      <li>Director of Business Administration reviews and approves the Disposal Request in SPMS.</li>
+      <li>The CDME point of contact coordinates pick-up with OSU Surplus.</li>
+      <li>If sold or auctioned, CDME may receive a percentage of the sale depending on OSU Surplus policy at that time; this should be confirmed before removal.</li>
+      <li>Director of Laboratory Services removes the equipment from CDME master equipment lists.</li>
+    </ol>
+
+    <div class="meta">Source document: Equipment – Surplus Process</div>
+  `,
+  drivers: `
+    <div class="eyebrow">General Ops</div>
+    <h2>OSU Drivers Registration</h2>
+    <p class="subtitle">Used to register CDME staff, student employees, and other OSU employees to drive CDME-owned vehicles.</p>
+
+    <h3>Overview</h3>
+    <p>Anyone who may operate a CDME-owned automobile must register with OSU Transportation & Traffic Management under CDME’s cost center before driving. The draft notes CDME currently owns a 2004 Saturn Ion and a 2012 Chevy box truck.</p>
+
+    <h3>Registration process</h3>
+    <ol>
+      <li>New driver completes and signs the OSU Transportation & Traffic Management Driver Registration Form.</li>
+      <li>The completed form is sent to the Director of Business Administration for review and authorized departmental signature.</li>
+      <li>The Director of Business Administration emails the fully executed form to OSU Transportation & Traffic Management.</li>
+      <li>A copy of the completed form is saved on the CDME S-drive in the appropriate location.</li>
+      <li>The Director of Business Administration initiates the driver in the online Drivers Registration Portal.</li>
+      <li>The driver receives instructions to submit current driver’s license information in the portal.</li>
+      <li>The Director of Business Administration approves the driver in the portal after license submission.</li>
+      <li>Once all steps are complete, the driver may operate CDME vehicles.</li>
+    </ol>
+
+    <div class="meta">Source document: OSU Drivers Registration Draft</div>
+  `,
+  marketing: `
+    <div class="eyebrow">General Ops</div>
+    <h2>Marketing</h2>
+    <p class="subtitle">Starter outline for the CDME marketing procedure page.</p>
+
+    <h3>Current structure in the draft</h3>
+    <ol>
+      <li>Overview</li>
+      <li>Photography / Video</li>
+      <li>OSU / CDME Logos</li>
+      <li>CDME Website</li>
+      <li>CDME Social Media</li>
+      <li>Other items to document</li>
+    </ol>
+
+    <div class="placeholder">
+      This page is still an outline. Once the final content is written, it can be dropped into this same template so users can navigate to it from the left side without leaving Teams.
+    </div>
+
+    <div class="meta">Source document: Marketing Draft</div>
+  `,
+  salesforce: `
+    <div class="eyebrow">Salesforce</div>
+    <h2>Salesforce Operating Procedures</h2>
+    <p class="subtitle">CRM guidance for access, records, opportunity management, projects, and email logging.</p>
+
+    <h3>Access / login</h3>
+    <ol>
+      <li>Contact the CDME Director of Business Administration to request a Salesforce license.</li>
+      <li>Use the link provided by Salesforce or a CDME Salesforce administrator to access CDME’s Salesforce domain and complete multifactor authentication.</li>
+    </ol>
+
+    <h3>Core data structure</h3>
+    <ul>
+      <li><strong>Accounts</strong> = the company or organization.</li>
+      <li><strong>Contacts</strong> = people associated with an account.</li>
+      <li><strong>Opportunities</strong> = potential funded projects still in the sales process.</li>
+      <li><strong>Projects</strong> = active or completed work created from Closed Won opportunities.</li>
+      <li><strong>Reports / Dashboards</strong> = filtered data and visualizations.</li>
+      <li><strong>Folderize</strong> = custom document management system for templates and related files.</li>
+    </ul>
+
+    <h3>Key operating rules</h3>
+    <ol>
+      <li>Search first before entering anything new.</li>
+      <li>Data integrity matters: incorrect information affects everyone using the system.</li>
+      <li>Create a new Contact from the Account screen whenever possible.</li>
+      <li>Create a new Opportunity from the Contact screen whenever possible.</li>
+      <li>Do not overwrite existing reports.</li>
+    </ol>
+
+    <h3>Opportunity stages</h3>
+    <ul>
+      <li>Blind RFP / Gov’t</li>
+      <li>Prospecting</li>
+      <li>Needs Identified</li>
+      <li>Verbal Approval</li>
+      <li>Proposal / Quote</li>
+      <li>Closed Won</li>
+      <li>Closed Lost</li>
+    </ul>
+
+    <p>Each stage has an associated discount rate used to help forecast potential future revenue, so stage changes need to reflect the real sales process rather than skipping ahead.</p>
+
+    <h3>Project rule</h3>
+    <p>Projects should only be created by clicking the <strong>Create Project</strong> button on the associated opportunity, and only after the opportunity is <strong>Closed Won</strong>.</p>
+
+    <h3>Email logging</h3>
+    <p>The draft includes multiple ways to log emails to Salesforce, including direct send from Salesforce and BCC to Salesforce using the user’s Email to Salesforce address.</p>
+
+    <div class="meta">Source document: Salesforce Operating Procedures Draft</div>
+  `
+};
+
+function showSection(id, el){
+  document.getElementById('content').innerHTML = sections[id] || '<p>Section not found.</p>';
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  if(el){ el.classList.add('active'); }
+}
+
+function filterNav(){
+  const q = document.getElementById('searchBox').value.toLowerCase().trim();
+  const groups = document.querySelectorAll('[data-group]');
+  groups.forEach(group => {
+    let visibleCount = 0;
+    const buttons = group.querySelectorAll('.nav-btn');
+    buttons.forEach(btn => {
+      const match = btn.textContent.toLowerCase().includes(q);
+      btn.style.display = match ? 'block' : 'none';
+      if(match) visibleCount++;
+    });
+    const empty = group.querySelector('.empty');
+    const hasOnlyEmpty = buttons.length === 0;
+    if(empty && q){
+      empty.style.display = empty.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+    } else if (empty) {
+      empty.style.display = 'block';
+    }
+    group.style.display = (visibleCount > 0 || hasOnlyEmpty) ? 'block' : 'none';
+    if(q && visibleCount > 0){ group.open = true; }
+  });
+}
+
+document.getElementById('content').innerHTML = sections.welcome;
+</script>
+</body>
+</html>
