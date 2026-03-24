@@ -1,0 +1,989 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CDME Policies & Procedures Hub</title>
+<style>
+  :root{
+    --bg:#f6f8fb;
+    --panel:#ffffff;
+    --border:#d9e0ea;
+    --text:#1f2937;
+    --muted:#5b6472;
+    --accent:#ba0c2f;
+    --accent-soft:#fdecef;
+    --hover:#f1f5f9;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:"Segoe UI", Arial, sans-serif;
+    color:var(--text);
+    background:var(--bg);
+  }
+  .app{
+    display:grid;
+    grid-template-columns:320px 1fr;
+    min-height:100vh;
+  }
+  .sidebar{
+    background:var(--panel);
+    border-right:1px solid var(--border);
+    padding:20px 16px;
+    overflow:auto;
+  }
+  .brand{
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--border);
+  }
+  .brand h1{
+    font-size:20px;
+    margin:0 0 4px 0;
+  }
+  .brand p{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.4;
+  }
+  .search{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:14px;
+    margin-bottom:14px;
+  }
+  details.group{
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:#fff;
+    margin-bottom:10px;
+    overflow:hidden;
+  }
+  details.group summary{
+    list-style:none;
+    cursor:pointer;
+    padding:12px 14px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#fff;
+  }
+  details.group summary::-webkit-details-marker{display:none}
+  details.group[open] summary{
+    background:var(--accent-soft);
+    color:var(--accent);
+  }
+  .items{
+    border-top:1px solid var(--border);
+    padding:6px;
+  }
+  .nav-btn{
+    width:100%;
+    text-align:left;
+    border:none;
+    background:none;
+    border-radius:8px;
+    padding:10px 10px;
+    cursor:pointer;
+    color:var(--text);
+    font-size:14px;
+    line-height:1.35;
+  }
+  .nav-btn:hover{background:var(--hover)}
+  .nav-btn.active{
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-weight:600;
+  }
+  .content{
+    padding:28px;
+  }
+  .content-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:28px;
+    max-width:1000px;
+    box-shadow:0 8px 24px rgba(15,23,42,.04);
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:6px 8px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  h2{margin:0 0 8px 0; font-size:30px;}
+  .subtitle{
+    margin:0 0 18px 0;
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.5;
+  }
+  h3{margin:22px 0 10px 0; font-size:19px;}
+  ol, ul{padding-left:22px; line-height:1.6;}
+  li{margin:4px 0}
+  .placeholder{
+    background:#fafafa;
+    border:1px dashed var(--border);
+    border-radius:14px;
+    padding:16px;
+    color:var(--muted);
+  }
+  .meta{
+    margin-top:24px;
+    font-size:12px;
+    color:var(--muted);
+    border-top:1px solid var(--border);
+    padding-top:14px;
+  }
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr}
+    .sidebar{border-right:none; border-bottom:1px solid var(--border)}
+    .content{padding:16px}
+    .content-card{padding:20px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>CDME Policies & Procedures</h1>
+      <p>Prototype hub for use inside Teams. Left-side categories can be expanded to jump to a policy or procedure.</p>
+    </div>
+
+    <input id="searchBox" class="search" type="text" placeholder="Search policies..." oninput="filterNav()" />
+
+    <details class="group" open data-group>
+      <summary><span>Intro</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn active" data-id="welcome" onclick="showSection('welcome', this)">Welcome / How to Use This Hub</button>
+      </div>
+    </details>
+
+    <details class="group" open data-group>
+      <summary><span>Facility ops</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn" data-id="purchase" onclick="showSection('purchase', this)">Equipment – Purchase Process</button>
+        <button class="nav-btn" data-id="donation" onclick="showSection('donation', this)">Equipment – Donation Process</button>
+        <button class="nav-btn" data-id="consignment" onclick="showSection('consignment', this)">Equipment – Consignment Process</button>
+        <button class="nav-btn" data-id="surplus" onclick="showSection('surplus', this)">Equipment – Surplus Process</button>
+        <button class="nav-btn" data-id="facilitycontrol" onclick="showSection('facilitycontrol', this)">Facility Control Procedure</button>
+        <button class="nav-btn" data-id="ehs" onclick="showSection('ehs', this)">Environmental Health and Safety</button>
+        <button class="nav-btn" data-id="visitorparking" onclick="showSection('visitorparking', this)">Visitor Parking Permit</button>
+        <button class="nav-btn" data-id="shipping" onclick="showSection('shipping', this)">Shipping and Receiving Procedure</button>
+        <button class="nav-btn" data-id="businesshours" onclick="showSection('businesshours', this)">Standard Business Hours</button>
+        <button class="nav-btn" data-id="pandemictraining" onclick="showSection('pandemictraining', this)">Pandemic One-on-One Training</button>
+      </div>
+    </details>
+
+    <details class="group" open data-group>
+      <summary><span>Salesforce</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn" data-id="salesforce" onclick="showSection('salesforce', this)">Salesforce Operating Procedures</button>
+        <button class="nav-btn" data-id="crm" onclick="showSection('crm', this)">Customer Relationship Management</button>
+      </div>
+    </details>
+
+    <details class="group" open data-group>
+      <summary><span>General ops</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn" data-id="drivers" onclick="showSection('drivers', this)">OSU Drivers Registration</button>
+        <button class="nav-btn" data-id="travel" onclick="showSection('travel', this)">Work Related Travel</button>
+        <button class="nav-btn" data-id="information" onclick="showSection('information', this)">Information Management</button>
+        <button class="nav-btn" data-id="dcn" onclick="showSection('dcn', this)">DCN File and Document Numbering</button>
+        <button class="nav-btn" data-id="inventions" onclick="showSection('inventions', this)">Invention Disclosure Process</button>
+        <button class="nav-btn" data-id="decisionmatrix" onclick="showSection('decisionmatrix', this)">Project Contract Vehicle Decision Matrix</button>
+        <button class="nav-btn" data-id="sponsoredguest" onclick="showSection('sponsoredguest', this)">Sponsored Guest</button>
+        <button class="nav-btn" data-id="marketing" onclick="showSection('marketing', this)">Marketing</button>
+      </div>
+    </details>
+
+    <details class="group" open data-group>
+      <summary><span>Human Resources</span><span>▾</span></summary>
+      <div class="items">
+        <button class="nav-btn" data-id="newassociate" onclick="showSection('newassociate', this)">New Associate Onboarding</button>
+        <button class="nav-btn" data-id="dresscode" onclick="showSection('dresscode', this)">Dress Code</button>
+        <button class="nav-btn" data-id="studenthandbook" onclick="showSection('studenthandbook', this)">Student Employee Handbook</button>
+        <button class="nav-btn" data-id="staffhiring" onclick="showSection('staffhiring', this)">Staff Employment – Hiring Process</button>
+        <button class="nav-btn" data-id="studenthiring" onclick="showSection('studenthiring', this)">Student Employment – Hiring Process</button>
+        <button class="nav-btn" data-id="studentonboarding" onclick="showSection('studentonboarding', this)">Student Employment – Onboarding, Promotions, and Offboarding</button>
+      </div>
+    </details>
+  </aside>
+
+  <main class="content">
+    <div class="content-card" id="content"></div>
+  </main>
+</div>
+
+<script>
+const sections = {
+  welcome: `
+    <div class="eyebrow">Intro</div>
+    <h2>Welcome / How to Use This Hub</h2>
+
+    <ul>
+      <li><strong>Intro</strong> contains overview and orientation material.</li>
+      <li><strong>Facility ops</strong> contains equipment, facility access, safety, and building-related procedures.</li>
+      <li><strong>Salesforce</strong> contains CRM procedures and stage guidance.</li>
+      <li><strong>General ops</strong> contains shared operational procedures, document controls, travel, and contracting guidance.</li>
+      <li><strong>Human Resources</strong> contains onboarding, hiring, handbook, and employment-related procedures.</li>
+    </ul>
+
+  `,
+  purchase: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Equipment – Purchase Process</h2>
+    <p class="subtitle">Used when CDME staff are purchasing equipment with CDME funds.</p>
+
+    <h3>Overview</h3>
+    <p>Equipment is central to CDME operations. This process should be followed when purchasing equipment with CDME funds.</p>
+
+    <h3>Required approvals before purchase</h3>
+    <ol>
+      <li><strong>Division Director</strong> (if applicable) confirms the equipment aligns with division goals and objectives.</li>
+      <li><strong>Director of Laboratory Services</strong> confirms space, power, and any facility upgrade needs.</li>
+      <li><strong>Director of Business Administration</strong> confirms funding is available for the purchase, delivery, and facility upgrades and confirms forecasted project work tied to the equipment.</li>
+      <li><strong>Executive Director</strong> confirms alignment with CDME’s mission and vision.</li>
+    </ol>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>CDME staff member obtains approval from all leadership listed above.</li>
+      <li>CDME staff member works with the CDME Fiscal Associate to initiate the purchase and follow university purchasing procedures.</li>
+      <li>CDME staff member coordinates delivery and any needed facility upgrades with the Director of Laboratory Services and Director of Business Administration.</li>
+      <li>Director of Laboratory Services documents the equipment on CDME master equipment lists.</li>
+    </ol>
+
+    <div class="meta">Source document: Equipment – Purchase Process</div>
+  `,
+  donation: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Equipment – Donation Process</h2>
+    <p class="subtitle">Used when equipment is being donated to CDME by an external partner.</p>
+
+    <h3>Overview</h3>
+    <p>Many CDME equipment additions come through donation. This process ensures the donation is properly approved and documented within OSU/CDME.</p>
+
+    <h3>Required approvals before donation</h3>
+    <ol>
+      <li><strong>Division Director</strong> (if applicable) confirms alignment with division goals.</li>
+      <li><strong>Director of Laboratory Services</strong> confirms space, power, and facility readiness.</li>
+      <li><strong>Director of Business Administration</strong> confirms funding for delivery and upgrades and confirms forecasted project use.</li>
+      <li><strong>Executive Director</strong> confirms alignment with CDME’s overall mission and vision.</li>
+    </ol>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>CDME staff member obtains all required leadership approvals.</li>
+      <li>CDME staff member works with the appropriate College of Engineering or OSU Office of Advancement staff to complete and document the donation paperwork.</li>
+      <li>CDME staff member coordinates delivery and facility upgrades with the Director of Laboratory Services and Director of Business Administration.</li>
+      <li>Director of Laboratory Services adds the donated equipment to CDME master equipment lists.</li>
+    </ol>
+
+    <div class="meta">Source document: Equipment – Donation Process</div>
+  `,
+  consignment: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Equipment – Consignment Process</h2>
+    <p class="subtitle">Used when external partners offer equipment to CDME under a consignment agreement.</p>
+
+    <h3>Overview</h3>
+    <p>This process should be followed to ensure consigned equipment is received and documented correctly within OSU/CDME.</p>
+
+    <h3>Required approvals before consignment</h3>
+    <ol>
+      <li><strong>Division Director</strong> (if applicable) confirms alignment with division goals.</li>
+      <li><strong>Director of Laboratory Services</strong> confirms facility capacity and upgrade needs.</li>
+      <li><strong>Director of Business Administration</strong> confirms funding for delivery, maintenance, and facility upgrades and confirms forecasted project work.</li>
+      <li><strong>Executive Director</strong> confirms alignment with CDME mission and vision.</li>
+    </ol>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>CDME staff member obtains the required approvals.</li>
+      <li>CDME staff member works with the Engineering Research Administration Contracts Manager and, if needed, OSU Legal Affairs to complete consignment paperwork with the external partner.</li>
+      <li>CDME staff member coordinates delivery and any needed upgrades with the Director of Laboratory Services and Director of Business Administration.</li>
+      <li>Director of Laboratory Services documents the equipment on CDME master equipment lists and includes beginning and end dates for the consignment.</li>
+    </ol>
+
+    <div class="meta">Source document: Equipment – Consignment Process</div>
+  `,
+  surplus: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Equipment – Surplus Process</h2>
+    <p class="subtitle">Used when CDME equipment is being removed or otherwise disposed of through OSU Surplus.</p>
+
+    <h3>Overview</h3>
+    <p>OSU Surplus handles the disposition of Ohio State property in accordance with university policy. Disposition methods can include department transfer, public sale, public auction, recycle, and trash.</p>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>CDME staff confirms ownership of the equipment with the Director of Laboratory Services before moving forward.</li>
+      <li>If the equipment belongs to a non-CDME faculty or staff member, permission from the owner must be received before disposition.</li>
+      <li>Director of Laboratory Services emails the Fiscal Associate the equipment name, location, OSU Asset ID if applicable, picture, disposition instructions, and CDME point of contact including phone number.</li>
+      <li>Fiscal Associate submits a Disposal Request through the OSU Surplus Property Management System (SPMS).</li>
+      <li>Director of Business Administration reviews and approves the Disposal Request in SPMS.</li>
+      <li>The CDME point of contact coordinates pick-up with OSU Surplus.</li>
+      <li>If sold or auctioned, CDME may receive a percentage of the sale depending on OSU Surplus policy at that time; this should be confirmed before removal.</li>
+      <li>Director of Laboratory Services removes the equipment from CDME master equipment lists.</li>
+    </ol>
+
+    <div class="meta">Source document: Equipment – Surplus Process</div>
+  `,
+  facilitycontrol: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Facility Control Procedure</h2>
+    <p class="subtitle">Defines non-negotiable access and security controls for CDME’s ITAR/EAR-compliant facility.</p>
+
+    <h3>Purpose and scope</h3>
+    <p>CDME is an ITAR and Export Administration Regulations compliant facility. Because much of the work does not qualify as fundamental research, export-controlled materials, equipment, processes, and generated work product are subject to strict facility and data controls.</p>
+
+    <h3>Physical security plan</h3>
+    <ul>
+      <li>Employees approved for unrestricted work inside CDME receive key card access to restricted areas.</li>
+      <li>BuckIDs and brass keys may not be loaned to another person and lost credentials must be reported immediately.</li>
+      <li>All non-CDME personnel are treated as visitors and must sign in before entering restricted space.</li>
+    </ul>
+
+    <h3>Visitor and entrance procedure</h3>
+    <ol>
+      <li>Visitors must list name, affiliation, and all countries of citizenship on the visitor log.</li>
+      <li>Any visitor who refuses to complete the log may not enter restricted space.</li>
+      <li>All visitors must be escorted in restricted space at all times.</li>
+      <li>Foreign visitors must be verified in Visual Compliance before admission; if a match appears, entry requires Office of Compliance approval.</li>
+      <li>Visitor logs must be retained and submitted to the Office of Compliance quarterly.</li>
+    </ol>
+
+    <h3>Additional control rules</h3>
+    <ul>
+      <li>Export-controlled items may not leave restricted space without prior authorization from the Office of Compliance.</li>
+      <li>Maintenance, janitorial, and repair personnel must be U.S. persons.</li>
+      <li>IT closet/server access is limited to U.S. persons and granted only on a necessity basis.</li>
+      <li>Technical data includes sponsor-provided export-controlled data and non-public project data such as drawings, reports, invention reports, and presentations.</li>
+    </ul>
+
+    <div class="meta">Source document: 7009B – Facility Control Procedure</div>
+  `,
+  ehs: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Environmental Health and Safety</h2>
+    <p class="subtitle">Establishes CDME safety responsibilities, required training, and equipment-specific competency requirements.</p>
+
+    <h3>Environmental Health & Safety requirements</h3>
+    <ul>
+      <li>CDME leadership must provide a safe work environment and maintain training records.</li>
+      <li>Faculty, staff, and students must complete required safety training and report unsafe conditions or accidents.</li>
+      <li>Any chemical or hazardous material brought on-site must include a Safety Data Sheet for the Environmental Safety Officer.</li>
+      <li>Research engineers must have a Standard Operating Procedure, documented training, and a Job Hazard Analysis before project work begins.</li>
+    </ul>
+
+    <h3>Training</h3>
+    <ol>
+      <li>All new staff attend EHS new staff orientation before accessing the floor or joining projects.</li>
+      <li>All new students complete the CDME online training package.</li>
+      <li>Users must set up an account in the EHS/OHS system and be assigned to the CDME group policy before participating in high-hazard work.</li>
+      <li>Before operating any equipment or machinery, staff must have documented SOP and JHA training.</li>
+    </ol>
+
+    <h3>Additional required training</h3>
+    <ul>
+      <li>All CDME employees must complete the “Securing the Human – Office of Research” course in Carmen.</li>
+      <li>Crane operators need an overhead crane operators course, knowledge assessment, and hands-on competency training every 5 years.</li>
+      <li>Forklift users need competency training, knowledge assessment, and pre-operation startup training every 3 years.</li>
+      <li>Paper copies of EHS policies are located on the high bay floor and on the CDME g-drive.</li>
+    </ul>
+
+    <div class="meta">Source document: 7004B – Environmental Health and Safety</div>
+  `,
+  visitorparking: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Visitor Parking Permit</h2>
+    <p class="subtitle">Explains how to handle short-term parking and electronic visitor permit registration for CDME guests.</p>
+
+    <h3>Overview</h3>
+    <ul>
+      <li>If a visitor will be on site for 20 minutes or less, they may park in the loading/unloading zone near the main entrance.</li>
+      <li>If the visit is longer than 20 minutes, they need a parking pass and may not remain in the loading/unloading zone.</li>
+      <li>CDME has a 10-minute grace period to complete electronic permit registration after the visitor arrives.</li>
+    </ul>
+
+    <h3>Visitor permit process</h3>
+    <ol>
+      <li>Log in to the CDME ParkMobile account.</li>
+      <li>Select <strong>Start Parking</strong>.</li>
+      <li>Select the <strong>Visitor</strong> tab.</li>
+      <li>Enter the visitor’s name and company.</li>
+      <li>Enter CDME’s zone number.</li>
+      <li>Select the expected duration and finalize the parking pass through the prompts.</li>
+    </ol>
+
+    <h3>Important note</h3>
+    <p>The permit should be completed as soon as the visitor arrives so any initial ticket can be waived under the agreed grace-period process.</p>
+
+    <div class="meta">Source document: 7005B – Visitor Parking Permit</div>
+  `,
+  shipping: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Shipping and Receiving Procedure</h2>
+    <p class="subtitle">Covers outbound shipping responsibilities, receiving inspections, shortage/damage handling, and freight claims.</p>
+
+    <h3>Shipping responsibilities</h3>
+    <ul>
+      <li>Prepare packages to prevent damage and follow carrier or NMFC packaging guidance.</li>
+      <li>If using pallets, stack cartons squarely with no overhang and secure them properly.</li>
+      <li>Shipper and consignee information must match the Bill of Lading exactly.</li>
+      <li>Hazardous materials must be labeled appropriately and disclosed to the carrier.</li>
+      <li>Arrange pickup either through a carrier directly or OSU Shipping and Receiving.</li>
+      <li>For expensive or unique shipments, take a photo before freight leaves CDME.</li>
+      <li>Obtain tracking or PRO numbers as soon as possible.</li>
+    </ul>
+
+    <h3>Receiving responsibilities</h3>
+    <ol>
+      <li>Check for visible damage such as punctures, wet boxes, torn wrap, or tilt/shock indicators.</li>
+      <li>Open suspicious shipments while the driver is present.</li>
+      <li>Document exact damage or shortages on both delivery receipts and have the driver sign them.</li>
+      <li>For concealed damage, notify the carrier immediately in writing and preserve the shipment in its discovered condition.</li>
+      <li>For shortages, count handling units carefully and note shortages in exact terms on the delivery receipt.</li>
+    </ol>
+
+    <h3>Important time limits and claims</h3>
+    <ul>
+      <li>Concealed damage should be reported as soon as possible and ideally within 5 days of delivery.</li>
+      <li>Most bills of lading require the carrier to receive a formal claim within 9 months.</li>
+      <li>Claims may be filed by the shipper, consignee, or another party with title to the goods.</li>
+      <li>Claim packages generally need a claim statement, bill of lading or delivery receipt, damage documentation, invoices, and photos.</li>
+    </ul>
+
+    <div class="meta">Source document: 7011A – Shipping and Receiving Procedure</div>
+  `,
+  businesshours: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Standard Business Hours</h2>
+    <p class="subtitle">Defines CDME facility access rules and the expected core daytime hours for staff availability.</p>
+
+    <h3>Facility hours</h3>
+    <p>CDME’s facility is open 24 hours per day, 7 days per week to employees. Staff and students may work unaccompanied in offices and conference rooms, but no one is authorized to work in the laboratory outside standard business hours without another person present.</p>
+
+    <h3>Standard business hours</h3>
+    <p>Because CDME’s primary customer base is in the Midwest, standard business hours are <strong>9:00 a.m. to 3:00 p.m.</strong> Staff should work with their supervisor to develop an agreed schedule that supports customer and vendor needs.</p>
+
+    <h3>Flexible scheduling</h3>
+    <p>If a traditional 8-hour day is not the right fit, the supervisor and staff member may arrange and document a flexible work schedule in accordance with OSU’s flexible work policy.</p>
+
+    <div class="meta">Source document: 7012A – Standard Business Hours</div>
+  `,
+  pandemictraining: `
+    <div class="eyebrow">Facility ops</div>
+    <h2>Pandemic One-on-One Training</h2>
+    <p class="subtitle">Guidance for equipment training that must be done in person during pandemic periods with social distancing controls in place.</p>
+
+    <h3>Background</h3>
+    <p>Some large or dangerous pieces of equipment cannot be trained effectively through remote tools alone. This procedure provides guidance for one-on-one hands-on training when traditional tele-training is not enough.</p>
+
+    <h3>Preconditions</h3>
+    <ul>
+      <li>The trainee must have completed all required CDME training assigned through BuckeyeLearn.</li>
+      <li>The trainee must have reviewed CDME policies and procedures posted on the intranet before face-to-face training begins.</li>
+    </ul>
+
+    <h3>Procedure</h3>
+    <ol>
+      <li>Wash hands frequently with soap/water or sanitizer, especially on entry and exit from the labs.</li>
+      <li>Face shields should be worn by both trainer and trainee during one-on-one training.</li>
+      <li>Training should be pre-planned and rehearsed to minimize face-to-face time.</li>
+      <li>All tools and work surfaces should be cleaned using university-approved surface cleaner.</li>
+    </ol>
+
+    <div class="meta">Source document: 7015A – Pandemic One-on-One Training Procedure</div>
+  `,
+  salesforce: `
+    <div class="eyebrow">Salesforce</div>
+    <h2>Salesforce Operating Procedures</h2>
+    <p class="subtitle">CRM guidance for access, records, opportunity management, projects, and email logging.</p>
+
+    <h3>Access / login</h3>
+    <ol>
+      <li>Contact the CDME Director of Business Administration to request a Salesforce license.</li>
+      <li>Use the link provided by Salesforce or a CDME Salesforce administrator to access CDME’s Salesforce domain and complete multifactor authentication.</li>
+    </ol>
+
+    <h3>Core data structure</h3>
+    <ul>
+      <li><strong>Accounts</strong> = the company or organization.</li>
+      <li><strong>Contacts</strong> = people associated with an account.</li>
+      <li><strong>Opportunities</strong> = potential funded projects still in the sales process.</li>
+      <li><strong>Projects</strong> = active or completed work created from Closed Won opportunities.</li>
+      <li><strong>Reports / Dashboards</strong> = filtered data and visualizations.</li>
+      <li><strong>Folderize</strong> = custom document management system for templates and related files.</li>
+    </ul>
+
+    <h3>Key operating rules</h3>
+    <ol>
+      <li>Search first before entering anything new.</li>
+      <li>Data integrity matters: incorrect information affects everyone using the system.</li>
+      <li>Create a new Contact from the Account screen whenever possible.</li>
+      <li>Create a new Opportunity from the Contact screen whenever possible.</li>
+      <li>Do not overwrite existing reports.</li>
+    </ol>
+
+    <h3>Opportunity stages</h3>
+    <ul>
+      <li>Blind RFP / Gov’t</li>
+      <li>Prospecting</li>
+      <li>Needs Identified</li>
+      <li>Verbal Approval</li>
+      <li>Proposal / Quote</li>
+      <li>Closed Won</li>
+      <li>Closed Lost</li>
+    </ul>
+
+    <p>Each stage has an associated discount rate used to help forecast potential future revenue, so stage changes need to reflect the real sales process rather than skipping ahead.</p>
+
+    <h3>Project rule</h3>
+    <p>Projects should only be created by clicking the <strong>Create Project</strong> button on the associated opportunity, and only after the opportunity is <strong>Closed Won</strong>.</p>
+
+    <h3>Email logging</h3>
+    <p>The draft includes multiple ways to log emails to Salesforce, including direct send from Salesforce and BCC to Salesforce using the user’s Email to Salesforce address.</p>
+
+    <div class="meta">Source document: Salesforce Operating Procedures Draft</div>
+  `,
+  crm: `
+    <div class="eyebrow">Salesforce</div>
+    <h2>Customer Relationship Management</h2>
+    <p class="subtitle">More detailed CRM guidance for accounts, sales stages, and project creation in Salesforce.</p>
+
+    <h3>Accounts</h3>
+    <ol>
+      <li>Before adding an account or any record, always search first.</li>
+      <li>Searching first avoids duplicates, preserves prior relationship history, and prevents wasted effort on accounts already assigned.</li>
+      <li>If no match exists, create the account from the sidebar create-new flow.</li>
+    </ol>
+
+    <h3>Opportunity stage guidance</h3>
+    <ul>
+      <li><strong>Blind RFP / Gov’t:</strong> typically government or formal RFP work where CDME has little ability to influence the buyer.</li>
+      <li><strong>Prospecting:</strong> CDME is presenting the idea to the customer and does not yet know the customer’s budget, need, or authority.</li>
+      <li><strong>Needs Identified:</strong> the customer clearly indicates the offering addresses a defined problem or need.</li>
+      <li><strong>Verbal Approval:</strong> the customer confirms they have budget and authority and asks for a proposal.</li>
+      <li><strong>Proposal / Quote:</strong> an official proposal has been submitted.</li>
+      <li><strong>Closed Won:</strong> the contract and PO are in hand and fully executed.</li>
+      <li><strong>Closed Lost:</strong> the customer says CDME did not win or will not be funded.</li>
+    </ul>
+
+    <h3>Project creation</h3>
+    <ol>
+      <li>Search for the won opportunity.</li>
+      <li>Open the opportunity in view mode.</li>
+      <li>Click <strong>Create Project</strong> on the Projects related list.</li>
+      <li>Verify project number, start date, and end date before saving.</li>
+    </ol>
+
+    <div class="meta">Source document: 7007D – Customer Relationship Management</div>
+  `,
+  drivers: `
+    <div class="eyebrow">General ops</div>
+    <h2>OSU Drivers Registration</h2>
+    <p class="subtitle">Used to register CDME staff, student employees, and other OSU employees to drive CDME-owned vehicles.</p>
+
+    <h3>Overview</h3>
+    <p>Anyone who may operate a CDME-owned automobile must register with OSU Transportation & Traffic Management under CDME’s cost center before driving.</p>
+
+    <h3>Registration process</h3>
+    <ol>
+      <li>New driver completes and signs the OSU Transportation & Traffic Management Driver Registration Form.</li>
+      <li>The completed form is sent to the Director of Business Administration for review and departmental signature.</li>
+      <li>The fully executed form is emailed to OSU Transportation & Traffic Management.</li>
+      <li>A copy is saved on the CDME S-drive.</li>
+      <li>The Director of Business Administration initiates the driver in the online Drivers Registration Portal.</li>
+      <li>The driver submits current license information in the portal.</li>
+      <li>The Director of Business Administration approves the driver in the portal.</li>
+      <li>Once complete, the driver may operate CDME vehicles.</li>
+    </ol>
+
+    <div class="meta">Source document: OSU Drivers Registration Draft</div>
+  `,
+  travel: `
+    <div class="eyebrow">General ops</div>
+    <h2>Work Related Travel</h2>
+    <p class="subtitle">Explains how CDME associates should authorize, book, and reconcile business travel using OSU travel resources.</p>
+
+    <h3>Overview</h3>
+    <p>Travel should be planned, estimated, and approved before the day of the trip. CDME’s preferred method is to use OSU travel resources so travel can be coordinated efficiently and, in many cases, paid directly by the university.</p>
+
+    <h3>Step 1. Pre-travel authorization</h3>
+    <ol>
+      <li>If driving your own vehicle, use the eTravel system to complete pre-travel information, including mileage and per diem.</li>
+      <li>If traveling by plane, train, or rental car, or traveling for more than one business day, first build an estimate with the Online Booking Tool or Agent Assist, then enter the full estimate in eTravel.</li>
+      <li>Use the proper chartfield and add a modest buffer to estimates so actual expenses do not exceed the approved amount.</li>
+      <li>Submit the request so a <strong>T number</strong> is assigned. The T number is required for reimbursement.</li>
+    </ol>
+
+    <h3>Step 2. Book travel</h3>
+    <p>After the T number is assigned, book flights and lodging through the approved travel tools. When possible, have the business manager or fiscal associate review the full budget before the trip to avoid reimbursement issues later.</p>
+
+    <h3>Step 3. Process reimbursement</h3>
+    <p>Travel reimbursement requests should be completed within <strong>30 days</strong> of returning. The traveler must provide receipts and any backup/supporting documentation directly to the business manager or fiscal associate.</p>
+
+    <div class="meta">Source document: 7003B – Work Related Travel</div>
+  `,
+  information: `
+    <div class="eyebrow">General ops</div>
+    <h2>Information Management</h2>
+    <p class="subtitle">Defines controls for protecting customer project information, work product, and restricted data.</p>
+
+    <h3>Overview and intent</h3>
+    <p>Projects completed for external customers must use controls that protect customer information and preserve trust. Even if a customer verbally or in writing says information may be shared publicly, CDME still must follow its procedures and verify any public release with the appropriate university offices.</p>
+
+    <h3>Core information-protection expectations</h3>
+    <ul>
+      <li>Keep customer programs, clients, and work products separated internally and outwardly.</li>
+      <li>Confirm permission before sharing graphs, data, samples, or deliverables that may have been funded by another client.</li>
+      <li>Be especially careful when information may cross between programs, even within the same company.</li>
+    </ul>
+
+    <h3>Tangible work product</h3>
+    <ul>
+      <li>All tangible work must be stored in locked locations within the CDME facility.</li>
+      <li>Drawings, lab notebooks, and documentation of work product and manufacturing practices must be locked within CDME.</li>
+      <li>At the end of projects, lab notes and related information should ideally be scanned and stored electronically in the project folder.</li>
+    </ul>
+
+    <h3>Access controls</h3>
+    <ul>
+      <li>Do not access customer project information from public or shared computers.</li>
+      <li>Do not post customer information on public websites or on sites that rely only on IP-based access control.</li>
+      <li>Always confirm that protected information is free for dissemination before public disclosure.</li>
+    </ul>
+
+    <div class="meta">Source document: 7006B – Information Management</div>
+  `,
+  dcn: `
+    <div class="eyebrow">General ops</div>
+    <h2>DCN File and Document Numbering</h2>
+    <p class="subtitle">Provides the document control numbering system used to organize and track CDME files and revisions.</p>
+
+    <h3>Objective / goal</h3>
+    <p>CDME uses Document Control Numbers (DCNs) so staff can identify the most current version of operational and marketing files and keep documents organized consistently.</p>
+
+    <h3>Step 1. Determine the number for your document</h3>
+    <ul>
+      <li>Document categories are grouped by the first digit block, including <strong>7***</strong> for internal processes and procedures.</li>
+      <li>Serial numbers usually begin at *001 and continue upward.</li>
+      <li>Version control begins with <strong>A</strong> and progresses alphabetically; if needed, it continues with double letters like AA.</li>
+      <li>Every DCN must be unique across the CDME system.</li>
+    </ul>
+
+    <h3>Step 2. Name and save the file</h3>
+    <p>File names use two parts separated by an underscore: the document number and a short description. Example formats include <strong>0032A_AntiCorrosion.pdf</strong> and <strong>6002C_ExternalOverview.ai</strong>.</p>
+
+    <h3>Practical use</h3>
+    <p>If a new document does not fit an existing category, staff should work with CDME management to determine the correct numbering approach before saving it into the system.</p>
+
+    <div class="meta">Source document: 7013A – DCN File and Document Numbering</div>
+  `,
+  inventions: `
+    <div class="eyebrow">General ops</div>
+    <h2>Invention Disclosure Process</h2>
+    <p class="subtitle">Steps to protect and disclose inventions or intellectual property created through CDME work.</p>
+
+    <h3>Overview</h3>
+    <p>If you believe you have created an invention or IP, the goal is to protect the inventor, the university, and the customer while keeping the process moving toward formal disclosure and commercialization review.</p>
+
+    <h3>Process steps</h3>
+    <ol>
+      <li>Gather historical documentation such as emails, customer paperwork, research notes, and anything that shows why and how the invention was created.</li>
+      <li>Create a storyboard that explains the process used to arrive at the invention, supported by sketches, photos, and project progress notes if possible.</li>
+      <li>Meet face-to-face with your supervisor and CDME’s Executive or Assistant Director to explain the invention and provide context.</li>
+      <li>Log in to Innovate.osu.edu and submit the invention disclosure.</li>
+    </ol>
+
+    <h3>After submission</h3>
+    <p>From that point, OSU’s Technology Commercialization Office manages the process, but the inventor should stay in close communication and actively request schedules, deliverables, and updates.</p>
+
+    <div class="meta">Source document: 7010B – Inventions</div>
+  `,
+  decisionmatrix: `
+    <div class="eyebrow">General ops</div>
+    <h2>Project Contract Vehicle Decision Matrix</h2>
+    <p class="subtitle">Guideline for selecting the best contracting vehicle and F&amp;A category based on the project scope.</p>
+
+    <h3>Objective</h3>
+    <p>CDME runs projects ranging from small machining tasks to complex multi-year research efforts. Because these project types require very different university resources, the correct contract vehicle and F&amp;A rate should be selected at the project level each time a new proposal or proposal modification is submitted.</p>
+
+    <h3>How the matrix is used</h3>
+    <ul>
+      <li>Use the flowchart to determine whether the work aligns with earnings projects, other sponsored activities, sponsored research, or another path.</li>
+      <li>Questions in the matrix focus on items such as fundamental research, publications or IP generation, graduate student involvement, curriculum development, non-OSU training, consulting, applied research, clinical trials/IRB, and government funding.</li>
+      <li>If you are unsure on any decision point, the document advises following the path that leads toward sponsored research and contacting ESPS for guidance rather than guessing.</li>
+    </ul>
+
+    <h3>Examples noted in the document</h3>
+    <ul>
+      <li>Standardized machining and testing projects tend to be simpler and use lower F&amp;A because back-office requirements are lower.</li>
+      <li>Fundamental research often requires more legal, HR, IT, contracting, and invoicing support and therefore uses higher F&amp;A categories.</li>
+    </ul>
+
+    <div class="meta">Source document: 7016B – Project Contract Vehicle Decision Matrix</div>
+  `,
+  sponsoredguest: `
+    <div class="eyebrow">General ops</div>
+    <h2>Sponsored Guest</h2>
+    <p class="subtitle">Used when an external collaborator needs an OSU name.# account and related access for CDME work.</p>
+
+    <h3>Overview</h3>
+    <p>CDME often collaborates with external customers who need OSU credentials for things like BuckID swipe access or systems access. Sponsored Guest accounts can be requested for those situations.</p>
+
+    <h3>Request process</h3>
+    <ol>
+      <li>Go to My.osu.edu and log in.</li>
+      <li>Click <strong>Add New Guest</strong>.</li>
+      <li>Complete the requested information.</li>
+      <li>If unsure on the relationship role, select <strong>Volunteer</strong>.</li>
+      <li>The primary sponsor should be the CDME staff member making the request.</li>
+      <li>The alternate sponsor should be the Director of Business Administration.</li>
+      <li>The guest administrator should be an ETS staff member who regularly works with CDME.</li>
+    </ol>
+
+    <h3>After submission</h3>
+    <ul>
+      <li>The guest receives activation instructions at the non-OSU email entered in the request.</li>
+      <li>Confirm the guest has activated the OSU name.# account.</li>
+      <li>Then submit any needed OSU/CDME access requests.</li>
+      <li>Sponsored Guest accounts stay active for no more than one year and must be renewed.</li>
+    </ul>
+
+    <div class="meta">Source document: Sponsored Guest.docx</div>
+  `,
+  marketing: `
+    <div class="eyebrow">General ops</div>
+    <h2>Marketing</h2>
+    <p class="subtitle">Starter outline for the CDME marketing procedure page.</p>
+
+    <h3>Current structure in the draft</h3>
+    <ol>
+      <li>Overview</li>
+      <li>Photography / Video</li>
+      <li>OSU / CDME Logos</li>
+      <li>CDME Website</li>
+      <li>CDME Social Media</li>
+      <li>Other items to document</li>
+    </ol>
+
+    <div class="placeholder">
+      This page is still an outline. Once the final content is written, it can be dropped into this same template so users can navigate to it from the left side without leaving Teams.
+    </div>
+
+    <div class="meta">Source document: Marketing Draft</div>
+  `,
+  newassociate: `
+    <div class="eyebrow">Human Resources</div>
+    <h2>New Associate Onboarding</h2>
+    <p class="subtitle">General onboarding steps for new CDME employees, including ID, parking, account setup, and leave systems.</p>
+
+    <h3>Step 1. Employee ID number and BuckID</h3>
+    <p>New employees should obtain a BuckID card at the BuckID Office using a photo ID and their name.#. The BuckID also contains the 9-digit employee ID number used by the university.</p>
+
+    <h3>Step 2. Parking permit</h3>
+    <p>Parking permits are issued by CampusParc. New hires typically need a West Campus permit, though eligible full-time employees may choose Main Campus. The first month should generally be paid by credit card before payroll deduction begins.</p>
+
+    <h3>Step 3. OSU account, computer, and phone setup</h3>
+    <ol>
+      <li>Set up the OSU name.# account using the activation email sent before the start date.</li>
+      <li>Work with Engineering IT for CDME server access and workstation login authorization.</li>
+      <li>Configure Outlook on the work computer.</li>
+      <li>Set up the OSU email signature using brand.osu.edu guidance.</li>
+      <li>Request mobile email activation through the OCIO service portal before using OSU email on a smartphone.</li>
+      <li>Desk phones are available for full-time employees upon request through the Fiscal Associate.</li>
+    </ol>
+
+    <h3>Step 4. Leave management</h3>
+    <p>Full-time associates request sick leave, vacation, military leave, and FMLA through the eLeave website, which also shows available balances.</p>
+
+    <div class="meta">Source document: 7001B – New Associate Onboarding</div>
+  `,
+  dresscode: `
+    <div class="eyebrow">Human Resources</div>
+    <h2>Dress Code</h2>
+    <p class="subtitle">Sets expectations for professional business-casual attire in an applied research and manufacturing environment.</p>
+
+    <h3>Overview</h3>
+    <p>Because CDME works in a professional manufacturing environment with frequent industrial visitors, all associates are expected to present themselves professionally and follow the dress code.</p>
+
+    <h3>Basic rules</h3>
+    <ul>
+      <li>No loose or baggy clothing on the manufacturing or research floor.</li>
+      <li>Acceptable pants include slacks, wool pants, dressy capris, and nice-looking jeans; shorts are not allowed.</li>
+      <li>Dresses and skirts may be acceptable in office areas, but full-length pants are required in laboratory spaces.</li>
+      <li>Acceptable shirts include casual shirts, dress shirts, sweaters, polos, and turtlenecks; logo t-shirts are not allowed.</li>
+      <li>Closed-toe and closed-heel shoes are required in manufacturing areas, and some equipment may require specific footwear.</li>
+      <li>Hats are not appropriate in the office.</li>
+      <li>Religious accommodations involving head dress or gowns must be two-piece with the head portion tucked in on the research or manufacturing floor.</li>
+    </ul>
+
+    <div class="meta">Source document: 7002B – Dress Code</div>
+  `,
+  studenthandbook: `
+    <div class="eyebrow">Human Resources</div>
+    <h2>Student Employee Handbook</h2>
+    <p class="subtitle">High-level expectations for student employment at CDME, including work hours, conduct, compliance, and safety.</p>
+
+    <h3>Mission and values</h3>
+    <p>CDME’s mission is to accelerate new manufacturing technologies and processes for industrial partners through innovation and integration of design and production processes. Core values include collaboration, commercialization, workforce development, and regional growth.</p>
+
+    <h3>Work hours and time entry</h3>
+    <ul>
+      <li>Students may not work more than 28 hours per week during academic semesters or 38 hours during official breaks.</li>
+      <li>Schedules must be approved by the supervisor.</li>
+      <li>Time must be entered weekly in eTimesheet; missing the Friday deadline can delay pay by two weeks.</li>
+    </ul>
+
+    <h3>Security and compliance</h3>
+    <ul>
+      <li>Students must follow the dress code and read the Information Management and Facility Control procedures.</li>
+      <li>Visitors to controlled space must sign in and be escorted at all times.</li>
+      <li>Protected data may never be transferred to personal devices or accessed from public computers.</li>
+      <li>Lab notebooks and printed protected data must remain secured and be properly destroyed when discarded.</li>
+      <li>Employees are bound by client nondisclosure agreements and should assume customer names and project details are confidential unless documented otherwise.</li>
+    </ul>
+
+    <h3>Housekeeping and EHS</h3>
+    <ul>
+      <li>Keep workspaces clean and organized, return tools to storage, and keep food and drink out of workspaces.</li>
+      <li>Unsafe conditions, accidents, and near misses must be reported.</li>
+      <li>Potentially dangerous equipment may not be used without supervisor approval and proper training.</li>
+    </ul>
+
+    <div class="meta">Source document: 7014A – Student Employee Handbook</div>
+  `,
+  staffhiring: `
+    <div class="eyebrow">Human Resources</div>
+    <h2>Staff Employment – Hiring Process</h2>
+    <p class="subtitle">Recruit-to-hire process for CDME staff positions.</p>
+
+    <h3>Overview</h3>
+    <p>CDME is a staff-led research center. Hiring decisions should be based on division financial stability, overall alignment with CDME’s mission, and ITAR/export-control requirements that all staff hires be U.S. persons.</p>
+
+    <h3>Recruit-to-hire process</h3>
+    <ol>
+      <li>Confirm there is a sufficient funding plan for the position.</li>
+      <li>Discuss the position and funding plan with the Executive Director and receive approval to proceed.</li>
+      <li>Work with the Director of Business Administration to determine the appropriate job profile/title, develop a draft position description, and identify computing/workstation needs.</li>
+      <li>Work with the ERA Human Resources Consultant to review, approve, and post the position in Workday for at least 7 days.</li>
+      <li>Finalize a broad and representative interview team.</li>
+      <li>Review applications, select interview candidates, and conduct interviews using consistent questions.</li>
+      <li>Select the final candidate and work with the ERA Human Resources Consultant on salary offer and start date.</li>
+      <li>Extend the offer, handle any negotiation, and disposition other applicants in Workday.</li>
+      <li>Notify the Director of Business Administration so CDME onboarding can begin.</li>
+    </ol>
+
+    <div class="meta">Source document: Staff Employment – Hiring Process Draft</div>
+  `,
+  studenthiring: `
+    <div class="eyebrow">Human Resources</div>
+    <h2>Student Employment – Hiring Process</h2>
+    <p class="subtitle">Recruitment and hiring process for CDME student employees.</p>
+
+    <h3>Overview</h3>
+    <p>CDME hires student employees with the goal of developing them over the course of their undergraduate experience rather than filling one-off project needs. All student employees must meet U.S. person requirements for export-control compliance.</p>
+
+    <h3>Recruitment</h3>
+    <ol>
+      <li>Confirm funding is in place before opening the position.</li>
+      <li>Post student job openings through OSU-related channels such as Handshake and the OSU Student Job Board.</li>
+      <li>Referrals may also be considered if the student is qualified.</li>
+    </ol>
+
+    <h3>Interviews</h3>
+    <ul>
+      <li>In-person interviews are strongly encouraged so candidates can experience CDME’s environment.</li>
+      <li>Ask consistent questions to all candidates.</li>
+      <li>Required interview topics include export-control eligibility, any other OSU employment, and ability to meet CDME’s minimum average work commitment of 15 hours per week.</li>
+      <li>Candidates who are interviewed and not selected must be notified.</li>
+    </ul>
+
+    <h3>Job offer and processing</h3>
+    <ol>
+      <li>Select the appropriate student job title based on the candidate’s experience.</li>
+      <li>Communicate the offer and, after acceptance, send hiring details to the Director of Business Administration.</li>
+      <li>Close out the posting after the position is filled.</li>
+      <li>CDME submits new student hire requests on a monthly cadence through the CoE Student Hiring Portal.</li>
+      <li>CoE HR then guides the student through Workday application and background check steps.</li>
+    </ol>
+
+    <div class="meta">Source document: Student Employment – Hiring Process Draft</div>
+  `,
+  studentonboarding: `
+    <div class="eyebrow">Human Resources</div>
+    <h2>Student Employment – Onboarding, Promotions, and Offboarding</h2>
+    <p class="subtitle">Defines orientation, required training, annual promotion timing, and exit steps for CDME student employees.</p>
+
+    <h3>New student employee onboarding</h3>
+    <ol>
+      <li>The Administrative Assistant coordinates a mandatory new student employee orientation meeting with the Director of Business Administration after the first of the month.</li>
+      <li>Supervisors should stay in communication with candidates before the orientation and start date.</li>
+      <li>Orientation should happen on or around the first day and cover introductions, human resources, ITAR/export control operations, general CDME operations, and a facility tour.</li>
+    </ol>
+
+    <h3>Required training courses</h3>
+    <p>Within the first two weeks of employment, new student employees should complete required BuckeyeLearn training, including institutional data policy, support/reporting, fraud prevention, fiscal stewardship, active shooter/aggressor, BEAP, shop and chemical safety, crane/hoist, fire extinguisher, LOTO, PPE, CFATS, PAPR, laser safety, and related safety courses.</p>
+
+    <h3>Access and systems</h3>
+    <ul>
+      <li>Swipe card access should be activated by the scheduled start date.</li>
+      <li>Network access is synced with Workday and begins once the hire is fully processed in the system.</li>
+    </ul>
+
+    <h3>Performance evaluations and promotions</h3>
+    <p>CDME conducts student performance evaluations annually in the spring. After evaluations, supervisors may adjust/promote students into new job titles or pay rates. This is the regular annual promotion window.</p>
+
+    <h3>Student offboarding</h3>
+    <ol>
+      <li>Students are expected to provide at least 2 weeks’ notice before resigning.</li>
+      <li>The supervisor informs the Director of Business Administration of the last day and reason for departure.</li>
+      <li>The Director of Business Administration submits termination paperwork, deactivates facility access, removes the student from lists and systems, and ensures the student exit survey is sent.</li>
+    </ol>
+
+    <div class="meta">Source document: Student Employment – Onboarding, Promotions, and Offboarding Processes Draft</div>
+  `
+};
+
+function showSection(id, el){
+  document.getElementById('content').innerHTML = sections[id] || '<p>Section not found.</p>';
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  if(el){ el.classList.add('active'); }
+}
+
+function filterNav(){
+  const q = document.getElementById('searchBox').value.toLowerCase().trim();
+  const groups = document.querySelectorAll('[data-group]');
+  groups.forEach(group => {
+    let visibleCount = 0;
+    const buttons = group.querySelectorAll('.nav-btn');
+    buttons.forEach(btn => {
+      const match = btn.textContent.toLowerCase().includes(q);
+      btn.style.display = match ? 'block' : 'none';
+      if(match) visibleCount++;
+    });
+    group.style.display = visibleCount > 0 ? 'block' : 'none';
+    if(q && visibleCount > 0){ group.open = true; }
+  });
+}
+
+document.getElementById('content').innerHTML = sections.welcome;
+</script>
+</body>
+</html>
